@@ -305,10 +305,10 @@ This is not a cause for concern, as long as we keep up with the actual rate at w
 \section{System Wide Deployment}
 \label{sec:swd}
 
-Following the encouraging performance results we obtained with Kafka, we went ahead and started a system-wide adoption project.
-We started by updating our high level Python library to replace DDS with Kafka.
+Following the encouraging performance results we obtained with Kafka, we started a system-wide adoption project.
+We commenced by updating our high level Python library to replace DDS with Kafka.
 During this period we wanted to maintain compatibility between both versions of the library to ease the transition.
-Overall, the worked pretty well and we are able to provide a compatible versions of the library that can be seamlessly swapped.
+Overall, the worked pretty well and we are able to provide compatible versions of the library that can be seamlessly swapped.
 
 Although the majority of our components are written using the high level Python library, some of the most critical components are written in C++ and Java, namely; the pointing component, the M1M3 support system (both in C++) and the cameras control system (in Java).
 The second phase of the process was then to update our C++ and Java components.
@@ -329,7 +329,7 @@ In Figure~\ref{fig:swd}, we show a screenshot of the user interface of our syste
     The left hand panel shows the state of all the components currently running; green means the system is in Enabled state which is when they are operational, yellow systems are in Standby which means the system is alive but not able to perform any action and blue means the system is in Disable which means the system is configured and ready to operate but will not perform any action.
     Two states are not represented; Offline and Fault, which are states for components that are not running or when they experience unexpected behavior.
     The middle panel shows the view of the Simonyi telescope status, showing the current position of the telescope and the state of the different axis.
-    The right hand panel show the same view for the Auxiliary Telescope.
+    The right hand panel shows the same view for the Auxiliary Telescope.
   }\label{fig:swd}
 \end{figure}
 
