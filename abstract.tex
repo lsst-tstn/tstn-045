@@ -1,0 +1,19 @@
+
+\begin{abstract}
+Once in operation, the Vera C. Rubin Observatory will execute a 10-year-long survey of the Southern sky known as the Legacy Survey of Space and Time (LSST).
+The Rubin Observatory Control System (Rubin-OCS) is a distributed system with each component in charge of a particular sub-system e.g.; the mount, the m1m3 mirror support system, etc.
+Each component is designed as an independent part of the system and they must work together during operations.
+Communication between the components is done by means of a software middleware.
+
+The software middleware is the backbone of the system, allowing components to communicate with each other in a seamless way.
+The highly distributed nature of the Rubin-OCS places tight constraints in terms of latency, availability, and reliability for the middleware.
+The baseline implementation of the Rubin-OCS adopts the Data Distribution Service (DDS) technology for the middleware.
+
+In the Rubin-OCS, the middleware is encapsulated with a layer of abstraction known as the Service Abstraction Layer (SAL), which currently uses the ADLink-OpenSpliceDDS implementation of the Data Distribution Service (DDS) message passing system.
+
+Recently we performed a study of using Apache Kafka to replace DDS as the middleware technology for the Rubin-OCS.
+This study was motivated by the middleware-related challenges we faced while integrating the system as well as the recent announcements indicating that the adopted library may be deprecated during the lifespan of the project.
+The study involved throughput and latency studies and a proof of concept of our core libraries.
+Overall Kafka proved to be a suitable replacement for DDS.
+\end{abstract}
+
