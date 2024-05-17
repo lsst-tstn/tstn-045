@@ -68,7 +68,7 @@ For these applications to work together coherently they must be able to communic
 How a distributed system is broken down into smaller pieces is heavily dependent upon the problem.
 Some systems are only broken down into a small number of components each still in charge of large contexts, others are broken down into many small applications that are in charge only of small simple tasks.
 The latter has gained substantial popularity recently and is commonly referred to as \textit{microservice architecture}.
-This  architecutre is behind many popular large services in use today like those from Google and Amazon.
+This  architecture is behind many popular large services in use today like those from Google and Amazon.
 
 The architecture of distributed systems can take many shapes and forms.
 For instance, some systems are designed to emulate monolithic applications.
@@ -77,7 +77,7 @@ The advantage of these systems is that they are easier to understand and to main
 Since each component is isolated from the rest of the system, and only communicates with a components on the top and bottom of the hierarchical chain, adding new components is relatively easy and have minimal impact in the system.
 The disadvantage is that the system is more vulnerable to outages, if a component on the top of the hierarchical chain becomes unavailable those components at the bottom also become unavailable.
 
-More modern distributed systems have been favoring less hierarchical approaches, following the principles of reactive systems.
+More modern distributed systems have favor less hierarchical approaches, following the principles of reactive systems.
 In these systems each component is designed as an independent entity that reacts to input data, be it from other components or external data services.
 Since these systems are designed with separation of concerns in mind (e.g. each component must be able to act independently), reactive systems are usually extremely resilient.
 If one component becomes unavailable, the others are expected to continue to operate, taking precautions to deal with the missing agent.
@@ -87,13 +87,13 @@ In any case, the middleware plays a crucial role in any kind of distributed syst
 
 The Vera C. Rubin Observatory\cite{2019ApJ...873..111I} Control System (Rubin-OCS) is designed following the principles of a distributed, reactive architecture.
 The system is composed of a number of independent components that work together to execute cohesive operations.
-The middleware is encapsulated with a layer of abstraction known as the Service Abstraction Layer (SAL), which currently uses the ADLink-OpenSpliceDDS implementation of the Data Distribution Service (DDS) message passing system \cite{2010SPIE.7740E..2CM}.
+The middleware is encapsulated in the Service Abstraction Layer (SAL), which currently uses the ADLink-OpenSpliceDDS implementation of the Data Distribution Service (DDS) message passing system \cite{2010SPIE.7740E..2CM}.
 Like similar projects before us\cite{10.1117/12.2313106}, we experienced considerable challenges with DDS while rolling out the system into production.
 While we were able to resolve the majority of those issues by fine tuning ADLink-OpenSpliceDDS configuration, a number of recurrent issues still remain, which are hard to track down and resolve due to their non-repeatable nature.
 However, one of the most critical aspects, that inspired us to look for a replacement is that the adopted library is currently bound for sunsetting.
 
 With all that in mind we decided to explore alternative solutions for the Rubin-OCS.
-After exploring a number of alternatives, we decided to adopt Kafka as the message passing system, with AVRO-schema encoding for the topics schema\cite{TSTN-033}.
+After exploring a number of alternatives\cite{TSTN-028}, we decided to adopt Kafka as the message passing system, with AVRO-schema encoding for the topics schema\cite{TSTN-033}.
 
 In the following sections we describe the work done to validate the adoption of Kafka and the initial results obtained with the system running in one of our test stands.
 In Section~\ref{sec:comparison} we provide a comparison between DDS and Kafka in the context of the Rubin-OCS, including a description of their similarities, differences and a performance review.
@@ -107,7 +107,7 @@ In this section we present a comparison between DDS and Kafka in the context of 
 \subsection{Similarities}
 \label{subsec:similarities}
 
-One of the main similarities between DDS and Kafka, which weighted considerably when we decided to explore Kafka as a viable replacement, is the fact that both use a publish-subscribe model to transmit and receive messages.
+One of the main similarities between DDS and Kafka, which weighed considerably when we decided to explore Kafka as a viable replacement, is the fact that both use a publish-subscribe model to transmit and receive messages.
 Each message is associated with a “topic”, which can be understood as a communication channel to exchange a particular type of message.
 
 In both cases, the message transport happens over TCP/IP protocol.
@@ -153,9 +153,9 @@ In the future we expect to be able to allow systems to update their interfaces m
 \subsubsection{Subtle Differences Between DDS and Kafka}
 \label{subsubsec:subtle_differences}
 
-DDS topics have the concept of “quality of service” (QoS) settings for topics.
-There are many QoS settings, and the settings must match quite closely between publishers and subscribers of a particular topic, else the topic cannot be constructed.
-This has been a source of much frustration over the years, though we have finally found QoS settings that work.
+DDS topics have the concept of “quality of service” (QoS) settings.
+There are many QoS settings, and the settings must match quite closely between publishers and subscribers of a particular topic, or else the topic cannot be constructed.
+This has been a source of much frustration over the years, though we ultimately found QoS settings that work.
 
 The settings for publishing Kafka topics are far simpler than for DDS, and subscribers have no settings.
 Kafka publishers can specify the number of partitions (increasing the number of partitions increases throughput) and how many ACKs to listen for when writing a message (a tradeoff between latency and reliability).
