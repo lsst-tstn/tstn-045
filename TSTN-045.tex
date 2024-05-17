@@ -32,7 +32,7 @@
 
 \begin{abstract}
 Once in operation, the Vera C. Rubin Observatory will execute a 10-year-long survey of the Southern sky known as the Legacy Survey of Space and Time (LSST).
-The Rubin Observatory Control System (Rubin-OCS) is a distributed system with each component in charge of a particular sub-system e.g.; the mount, the m1m3 mirror support system, etc.
+The Rubin Observatory Control System (Rubin-OCS) is a distributed system with each component in charge of a particular sub-system e.g.; the mount, the M1M3 mirror support system, etc.
 Each component is designed as an independent part of the system and they must work together during operations.
 Communication between the components is done by means of a software middleware.
 
@@ -48,7 +48,7 @@ The study involved throughput and latency studies and a proof of concept of our 
 Overall Kafka proved to be a suitable replacement for DDS.
 \end{abstract}
 
-\keywords{observatory control, middleware, Kafka, Data Distribution Service, DDS}
+\keywords{Vera C. Rubin Observatory, observatory control, middleware, Kafka, Data Distribution Service, DDS}
 
 \section{INTRODUCTION}
 \label{sec:intro}
@@ -61,7 +61,7 @@ For these applications to work together coherently they must be able to communic
 
 How a distributed system is broken down into smaller pieces is heavily dependent upon the problem.
 Some systems are only broken down into a small number of components each still in charge of large contexts, others are broken down into many small applications that are in charge only of small simple tasks.
-The latter has gained substantial popularity recently and is commonly referred to as *microservices*.
+The latter has gained substantial popularity recently and is commonly referred to as \textit{microservices}.
 These systems are behind many of popular large services in use today like Google and Amazon.
 
 The architecture of distributed systems can take many shapes and forms.
@@ -79,9 +79,9 @@ At the same time, it can become quite burdensome to update and grow these system
 
 In any case, the middleware plays a crucial role in any kind of distributed system, acting as the glue that binds the system together.
 
-The Vera Rubin Observatory Control System (Rubin-OCS) is designed following the principles of a distributed, reactive architecture.
+The Vera C. Rubin Observatory\cite{2019ApJ...873..111I} Control System (Rubin-OCS) is designed following the principles of a distributed, reactive architecture.
 The system is composed of a number of independent components that work together to execute cohesive operations.
-The middleware is encapsulated with a layer of abstraction known as the Service Abstraction Layer (SAL), which currently uses the ADLink-OpenSpliceDDS implementation of the Data Distribution Service (DDS) message passing system.
+The middleware is encapsulated with a layer of abstraction known as the Service Abstraction Layer (SAL), which currently uses the ADLink-OpenSpliceDDS implementation of the Data Distribution Service (DDS) message passing system \cite{2010SPIE.7740E..2CM}.
 Like similar projects before us\cite{10.1117/12.2313106}, we experienced considerable challenges with DDS while rolling out the system into production.
 While we were able to resolve the majority of those issues by fine tuning ADLink-OpenSpliceDDS configuration, a number of recurrent issues still remain, which are hard to track down and resolve due to their non-repeatable nature.
 However, one of the most critical aspects, that inspired us to look for a replacement is that the adopted library is currently bound for sunsetting.
@@ -152,7 +152,7 @@ There are many QoS settings, and the settings must match quite closely between p
 This has been a source of much frustration over the years, though we have finally found QoS settings that work.
 
 The settings for publishing Kafka topics are far simpler than for DDS, and subscribers have no settings.
-Kafka publishers can specify the number of partitions (increasing the number of partitions increases throughput) and how many acks to listen for when writing a message (a tradeoff between latency and reliability).
+Kafka publishers can specify the number of partitions (increasing the number of partitions increases throughput) and how many ACKs to listen for when writing a message (a tradeoff between latency and reliability).
 
 DDS topics have the concept of “liveness” (one of the many QoS settings), whereas Kafka topics do not.
 We have configured our DDS topics such that messages are no longer alive when a CSC exits, in order to avoid collisions between older and newer versions of topic QoS when upgrading control software.
@@ -199,9 +199,9 @@ We tested performance using three topics:
 For Kafka we performed the tests using two different settings:
 
 \begin{itemize}
-  \item ack=0, meaning the writers will not wait for confirmation from the broker that the topic was received.
+  \item \texttt{ack=0}, meaning the writers will not wait for confirmation from the broker that the topic was received.
     This is not considered safe, and is provided purely to show how much latency is due to waiting for acknowledgement.
-  \item ack=1, meaning the writers will wait for 1 acknowledgement from the broker.
+  \item \texttt{ack=1}, meaning the writers will wait for 1 acknowledgement from the broker.
     This is a very common configuration that is considered safe.
 \end{itemize}
 
@@ -220,7 +220,7 @@ The results are shown in Table~\ref{tab:latency}.
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
-        System & Acks & Topic             & \multicolumn{4}{c|}{Latency (ms)} \\
+        System & ACKs & Topic             & \multicolumn{4}{c|}{Latency (ms)} \\
                &      &                   & mean & stdev & min & max     \\
         \hline
         DDS    & n/a  & summaryState      & 1    & 0     & 1   & 1       \\
@@ -236,8 +236,8 @@ The results are shown in Table~\ref{tab:latency}.
     \end{tabular}
     \caption{
       Summary of the latency measurements performed with DDS and Kafka for three different topics.
-      For Kafka we performed latency measurements with two different setups; ack=0 and ack=1.
-      When ack=0 the writer will not wait for confirmation from the broker that the topic was written before proceeding, whereas with ack=1 it will wait for at least 1 receive acknowledgement.
+      For Kafka we performed latency measurements with two different setups; \texttt{ack=0} and \texttt{ack=1}.
+      When  \texttt{ack=0} the writer will not wait for confirmation from the broker that the topic was written before proceeding, whereas with  \texttt{ack=1} it will wait for at least 1 receive acknowledgement.
       The three different topics used in this test represents the smallest (summaryState) and the largest (forceActuatorData) topics in our system, plus an intermediary case that requires the lowest latency possible (trackTarget).
     }
     \label{tab:latency}
