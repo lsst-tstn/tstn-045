@@ -174,7 +174,7 @@ If a topic’s schema has changed in some incompatible way then we might have to
 \subsection{Performance}
 \label{subsec:performance}
 
-One of our main concerns in adopting Kafka as a replacement for DDS was to ensure its performance was on par with our systems requirements.
+One of our main concerns in adopting Kafka as a replacement for DDS was to ensure its performance was on par with our system requirements.
 Our primary performance requirements are:
 
 \begin{itemize}
@@ -214,7 +214,7 @@ For Kafka we performed the tests using two different settings:
 For DDS we used our standard configuration.
 All tests were executed on a dedicated node with the same configuration we use for our production environment.
 
-The results are presented in the following sessions.
+The results are presented in the following sections.
 
 \subsubsection{Latency}
 \label{subsubsec:performance:latency}
@@ -268,7 +268,7 @@ The results are shown in Table~\ref{tab:speed}.
     \centering
     \begin{tabular}{|c|c|c|c|c|c|}
         \hline
-        System & Acks & Topic             & Write Speed & Read Speed & Messages lost \\
+        System & ACKs & Topic             & Write Speed & Read Speed & Messages lost \\
                &      &                   & messages/s  & messages/s &               \\
         \hline
         DDS    & n/a  & summaryState      & 16,553      & 16,580     & 0             \\
@@ -284,7 +284,7 @@ The results are shown in Table~\ref{tab:speed}.
     \end{tabular}
     \caption{
       Write speed measurements for DDS and Kafka.
-      As with the latency measurements in Section~\ref{subsubsec:performance:latency} () the measurements were performed with 2 different configurations for the Kafka writer and for three different topics.
+      As with the latency measurements in Section~\ref{subsubsec:performance:latency} the measurements were performed with 2 different configurations for the Kafka writer and for three different topics.
       See Table~\ref{tab:latency} for more details.
     }
     \label{tab:speed}
@@ -296,7 +296,7 @@ Note that, alongside write speed and message loss, we also report read speed.
 It is worth noting that this is not a measure of maximum read speed, as this is limited by the write speed.
 In general, as long as the reader can keep up with the writer, read speed should be approximately the same as write speed.
 It is not clear to us why the reported read speed is sometimes slightly higher than write speed.
-We believe that this might be because the writers starts a shortly before the reader and it might have time to write some messages before the readers starts to read them.
+We believe that this might be because the writers starts shortly before the reader and it might have time to write some messages before the readers starts to read them.
 This would cause the reader to quickly read messages previously in the historical queue and suggests that it is possible to consume messages faster than we can produce it which is, in general, a desirable property in publish-subscribe systems.
 
 The fact that some DDS messages were lost shows that our DDS testing harness can write large messages faster than it can read them.
