@@ -61,14 +61,14 @@ Overall Kafka proved to be a suitable replacement for DDS.
 
 Middleware typically denotes software applications utilized for enabling communication in parallel and distributed computing\cite{BUYYA201329}.
 This technology became popular with the advent of distributed systems, which come as a solution to the problem of parallel computation.
-As software and hardware systems became more complex, it becomes impractical to develop and execute them in a single process and, eventually, a single node.
-With that, software evolved from monolithic applications, where a single program executes in a single process or node, to distributed applications, where the system is divided into a number of smaller applications; each running on their own process or node.
+As the complexity of software and hardware systems increase, it becomes impractical to develop and execute single processes on a single node.
+Hence, software evolved from monolithic applications, where a single program executes in a single process or node, to distributed applications, where the system is divided into a number of smaller applications; each running as their own process possibly on their own node.
 For these applications to work together coherently they must be able to communicate with each other, thus giving origin to middleware technologies.
 
 How a distributed system is broken down into smaller pieces is heavily dependent upon the problem.
 Some systems are only broken down into a small number of components each still in charge of large contexts, others are broken down into many small applications that are in charge only of small simple tasks.
-The latter has gained substantial popularity recently and is commonly referred to as \textit{microservices}.
-These systems are behind many of popular large services in use today like Google and Amazon.
+The latter has gained substantial popularity recently and is commonly referred to as \textit{microservice architecture}.
+This  architecutre is behind many popular large services in use today like those from Google and Amazon.
 
 The architecture of distributed systems can take many shapes and forms.
 For instance, some systems are designed to emulate monolithic applications.
@@ -93,7 +93,7 @@ While we were able to resolve the majority of those issues by fine tuning ADLink
 However, one of the most critical aspects, that inspired us to look for a replacement is that the adopted library is currently bound for sunsetting.
 
 With all that in mind we decided to explore alternative solutions for the Rubin-OCS.
-After exploring a number of alternatives, we decided to adopt Kafka as the message passing system, with AVRO-schema encoding for the topics schema.
+After exploring a number of alternatives, we decided to adopt Kafka as the message passing system, with AVRO-schema encoding for the topics schema\cite{TSTN-033}.
 
 In the following sections we describe the work done to validate the adoption of Kafka and the initial results obtained with the system running in one of our test stands.
 In Section~\ref{sec:comparison} we provide a comparison between DDS and Kafka in the context of the Rubin-OCS, including a description of their similarities, differences and a performance review.
@@ -349,7 +349,7 @@ This material is based upon work supported in part by the National Science Found
 Additional Rubin Observatory funding comes from private donations, grants to universities, and in-kind support from LSSTC Institutional Members.
 
 % References
-\bibliography{report,refs_ads} % bibliography data in report.bib
+\bibliography{report,refs_ads,lsst} % bibliography data in report.bib
 \bibliographystyle{spiebib} % makes bibtex use spiebib.bst
 
 \end{document}
