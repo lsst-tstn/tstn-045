@@ -87,7 +87,7 @@ In any case, the middleware plays a crucial role in any kind of distributed syst
 
 The Vera C. Rubin Observatory\cite{2019ApJ...873..111I} Control System (Rubin-OCS) is designed following the principles of a distributed, reactive architecture.
 The system is composed of a number of independent components that work together to execute cohesive operations.
-The middleware is encapsulated in the Service Abstraction Layer (SAL), which currently uses the ADLink-OpenSpliceDDS implementation of the Data Distribution Service (DDS) message passing system \cite{2010SPIE.7740E..2CM}.
+The middleware is encapsulated in the Service Abstraction Layer (SAL), which currently uses the ADLink-OpenSpliceDDS implementation of the Data Distribution Service (DDS) message passing system \cite{2016SPIE.9906E..5CM,2010SPIE.7740E..2CM}.
 Like similar projects before us\cite{10.1117/12.2313106}, we experienced considerable challenges with DDS while rolling out the system into production.
 While we were able to resolve the majority of those issues by fine tuning ADLink-OpenSpliceDDS configuration, a number of recurrent issues still remain, which are hard to track down and resolve due to their non-repeatable nature.
 However, one of the most critical aspects, that inspired us to look for a replacement is that the adopted library is currently bound for sunsetting.
