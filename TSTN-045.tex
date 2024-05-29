@@ -9,6 +9,12 @@
 \usepackage{graphicx}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
+\newcommand{\aj}{AJ}
+\newcommand{\apj}{ApJ}
+\newcommand{\apjs}{ApJS}
+\newcommand{\procspie}{Proc.\ SPIE}
+\newcommand{\pasj}{PASJ}
+
 \title{Replacing DDS with Apache Kafka as middleware technology for the Rubin Observatory Control System}
 \date{\today}
 
@@ -32,7 +38,7 @@
 
 \begin{abstract}
 Once in operation, the Vera C. Rubin Observatory will execute a 10-year-long survey of the Southern sky known as the Legacy Survey of Space and Time (LSST).
-The Rubin Observatory Control System (Rubin-OCS) is a distributed system with each component in charge of a particular sub-system e.g.; the mount, the m1m3 mirror support system, etc.
+The Rubin Observatory Control System (Rubin-OCS) is a distributed system with each component in charge of a particular sub-system e.g.; the mount, the M1M3 mirror support system, etc.
 Each component is designed as an independent part of the system and they must work together during operations.
 Communication between the components is done by means of a software middleware.
 
@@ -48,21 +54,21 @@ The study involved throughput and latency studies and a proof of concept of our 
 Overall Kafka proved to be a suitable replacement for DDS.
 \end{abstract}
 
-\keywords{observatory control, middleware, Kafka, Data Distribution Service, DDS}
+\keywords{Vera C. Rubin Observatory, observatory control, middleware, Kafka, Data Distribution Service, DDS}
 
 \section{INTRODUCTION}
 \label{sec:intro}
 
 Middleware typically denotes software applications utilized for enabling communication in parallel and distributed computing\cite{BUYYA201329}.
 This technology became popular with the advent of distributed systems, which come as a solution to the problem of parallel computation.
-As software and hardware systems became more complex, it becomes impractical to develop and execute them in a single process and, eventually, a single node.
-With that, software evolved from monolithic applications, where a single program executes in a single process or node, to distributed applications, where the system is divided into a number of smaller applications; each running on their own process or node.
+As the complexity of software and hardware systems increase, it becomes impractical to develop and execute single processes on a single node.
+Hence, software evolved from monolithic applications, where a single program executes in a single process or node, to distributed applications, where the system is divided into a number of smaller applications; each running as their own process possibly on their own node.
 For these applications to work together coherently they must be able to communicate with each other, thus giving origin to middleware technologies.
 
 How a distributed system is broken down into smaller pieces is heavily dependent upon the problem.
 Some systems are only broken down into a small number of components each still in charge of large contexts, others are broken down into many small applications that are in charge only of small simple tasks.
-The latter has gained substantial popularity recently and is commonly referred to as *microservices*.
-These systems are behind many of popular large services in use today like Google and Amazon.
+The latter has gained substantial popularity recently and is commonly referred to as \textit{microservice architecture}.
+This  architecture is behind many popular large services in use today like those from Google and Amazon.
 
 The architecture of distributed systems can take many shapes and forms.
 For instance, some systems are designed to emulate monolithic applications.
@@ -71,7 +77,7 @@ The advantage of these systems is that they are easier to understand and to main
 Since each component is isolated from the rest of the system, and only communicates with a components on the top and bottom of the hierarchical chain, adding new components is relatively easy and have minimal impact in the system.
 The disadvantage is that the system is more vulnerable to outages, if a component on the top of the hierarchical chain becomes unavailable those components at the bottom also become unavailable.
 
-More modern distributed systems have been favoring less hierarchical approaches, following the principles of reactive systems.
+More modern distributed systems have favor less hierarchical approaches, following the principles of reactive systems.
 In these systems each component is designed as an independent entity that reacts to input data, be it from other components or external data services.
 Since these systems are designed with separation of concerns in mind (e.g. each component must be able to act independently), reactive systems are usually extremely resilient.
 If one component becomes unavailable, the others are expected to continue to operate, taking precautions to deal with the missing agent.
@@ -79,15 +85,15 @@ At the same time, it can become quite burdensome to update and grow these system
 
 In any case, the middleware plays a crucial role in any kind of distributed system, acting as the glue that binds the system together.
 
-The Vera Rubin Observatory Control System (Rubin-OCS) is designed following the principles of a distributed, reactive architecture.
+The Vera C. Rubin Observatory\cite{2019ApJ...873..111I} Control System (Rubin-OCS) is designed following the principles of a distributed, reactive architecture.
 The system is composed of a number of independent components that work together to execute cohesive operations.
-The middleware is encapsulated with a layer of abstraction known as the Service Abstraction Layer (SAL), which currently uses the ADLink-OpenSpliceDDS implementation of the Data Distribution Service (DDS) message passing system.
+The middleware is encapsulated in the Service Abstraction Layer (SAL), which currently uses the ADLink-OpenSpliceDDS implementation of the Data Distribution Service (DDS) message passing system \cite{2010SPIE.7740E..2CM}.
 Like similar projects before us\cite{10.1117/12.2313106}, we experienced considerable challenges with DDS while rolling out the system into production.
 While we were able to resolve the majority of those issues by fine tuning ADLink-OpenSpliceDDS configuration, a number of recurrent issues still remain, which are hard to track down and resolve due to their non-repeatable nature.
 However, one of the most critical aspects, that inspired us to look for a replacement is that the adopted library is currently bound for sunsetting.
 
 With all that in mind we decided to explore alternative solutions for the Rubin-OCS.
-After exploring a number of alternatives, we decided to adopt Kafka as the message passing system, with AVRO-schema encoding for the topics schema.
+After exploring a number of alternatives\cite{TSTN-028}, we decided to adopt Kafka as the message passing system, with AVRO-schema encoding for the topics schema\cite{TSTN-033}.
 
 In the following sections we describe the work done to validate the adoption of Kafka and the initial results obtained with the system running in one of our test stands.
 In Section~\ref{sec:comparison} we provide a comparison between DDS and Kafka in the context of the Rubin-OCS, including a description of their similarities, differences and a performance review.
@@ -101,7 +107,7 @@ In this section we present a comparison between DDS and Kafka in the context of 
 \subsection{Similarities}
 \label{subsec:similarities}
 
-One of the main similarities between DDS and Kafka, which weighted considerably when we decided to explore Kafka as a viable replacement, is the fact that both use a publish-subscribe model to transmit and receive messages.
+One of the main similarities between DDS and Kafka, which weighed considerably when we decided to explore Kafka as a viable replacement, is the fact that both use a publish-subscribe model to transmit and receive messages.
 Each message is associated with a “topic”, which can be understood as a communication channel to exchange a particular type of message.
 
 In both cases, the message transport happens over TCP/IP protocol.
@@ -147,12 +153,12 @@ In the future we expect to be able to allow systems to update their interfaces m
 \subsubsection{Subtle Differences Between DDS and Kafka}
 \label{subsubsec:subtle_differences}
 
-DDS topics have the concept of “quality of service” (QoS) settings for topics.
-There are many QoS settings, and the settings must match quite closely between publishers and subscribers of a particular topic, else the topic cannot be constructed.
-This has been a source of much frustration over the years, though we have finally found QoS settings that work.
+DDS topics have the concept of “quality of service” (QoS) settings.
+There are many QoS settings, and the settings must match quite closely between publishers and subscribers of a particular topic, or else the topic cannot be constructed.
+This has been a source of much frustration over the years, though we ultimately found QoS settings that work.
 
 The settings for publishing Kafka topics are far simpler than for DDS, and subscribers have no settings.
-Kafka publishers can specify the number of partitions (increasing the number of partitions increases throughput) and how many acks to listen for when writing a message (a tradeoff between latency and reliability).
+Kafka publishers can specify the number of partitions (increasing the number of partitions increases throughput) and how many ACKs to listen for when writing a message (a tradeoff between latency and reliability).
 
 DDS topics have the concept of “liveness” (one of the many QoS settings), whereas Kafka topics do not.
 We have configured our DDS topics such that messages are no longer alive when a CSC exits, in order to avoid collisions between older and newer versions of topic QoS when upgrading control software.
@@ -168,7 +174,7 @@ If a topic’s schema has changed in some incompatible way then we might have to
 \subsection{Performance}
 \label{subsec:performance}
 
-One of our main concerns in adopting Kafka as a replacement for DDS was to ensure its performance was on par with our systems requirements.
+One of our main concerns in adopting Kafka as a replacement for DDS was to ensure its performance was on par with our system requirements.
 Our primary performance requirements are:
 
 \begin{itemize}
@@ -199,16 +205,16 @@ We tested performance using three topics:
 For Kafka we performed the tests using two different settings:
 
 \begin{itemize}
-  \item ack=0, meaning the writers will not wait for confirmation from the broker that the topic was received.
+  \item \texttt{ack=0}, meaning the writers will not wait for confirmation from the broker that the topic was received.
     This is not considered safe, and is provided purely to show how much latency is due to waiting for acknowledgement.
-  \item ack=1, meaning the writers will wait for 1 acknowledgement from the broker.
+  \item \texttt{ack=1}, meaning the writers will wait for 1 acknowledgement from the broker.
     This is a very common configuration that is considered safe.
 \end{itemize}
 
 For DDS we used our standard configuration.
 All tests were executed on a dedicated node with the same configuration we use for our production environment.
 
-The results are presented in the following sessions.
+The results are presented in the following sections.
 
 \subsubsection{Latency}
 \label{subsubsec:performance:latency}
@@ -220,7 +226,7 @@ The results are shown in Table~\ref{tab:latency}.
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
-        System & Acks & Topic             & \multicolumn{4}{c|}{Latency (ms)} \\
+        System & ACKs & Topic             & \multicolumn{4}{c|}{Latency (ms)} \\
                &      &                   & mean & stdev & min & max     \\
         \hline
         DDS    & n/a  & summaryState      & 1    & 0     & 1   & 1       \\
@@ -236,8 +242,8 @@ The results are shown in Table~\ref{tab:latency}.
     \end{tabular}
     \caption{
       Summary of the latency measurements performed with DDS and Kafka for three different topics.
-      For Kafka we performed latency measurements with two different setups; ack=0 and ack=1.
-      When ack=0 the writer will not wait for confirmation from the broker that the topic was written before proceeding, whereas with ack=1 it will wait for at least 1 receive acknowledgement.
+      For Kafka we performed latency measurements with two different setups; \texttt{ack=0} and \texttt{ack=1}.
+      When  \texttt{ack=0} the writer will not wait for confirmation from the broker that the topic was written before proceeding, whereas with  \texttt{ack=1} it will wait for at least 1 receive acknowledgement.
       The three different topics used in this test represents the smallest (summaryState) and the largest (forceActuatorData) topics in our system, plus an intermediary case that requires the lowest latency possible (trackTarget).
     }
     \label{tab:latency}
@@ -262,7 +268,7 @@ The results are shown in Table~\ref{tab:speed}.
     \centering
     \begin{tabular}{|c|c|c|c|c|c|}
         \hline
-        System & Acks & Topic             & Write Speed & Read Speed & Messages lost \\
+        System & ACKs & Topic             & Write Speed & Read Speed & Messages lost \\
                &      &                   & messages/s  & messages/s &               \\
         \hline
         DDS    & n/a  & summaryState      & 16,553      & 16,580     & 0             \\
@@ -278,7 +284,7 @@ The results are shown in Table~\ref{tab:speed}.
     \end{tabular}
     \caption{
       Write speed measurements for DDS and Kafka.
-      As with the latency measurements in Section~\ref{subsubsec:performance:latency} () the measurements were performed with 2 different configurations for the Kafka writer and for three different topics.
+      As with the latency measurements in Section~\ref{subsubsec:performance:latency} the measurements were performed with 2 different configurations for the Kafka writer and for three different topics.
       See Table~\ref{tab:latency} for more details.
     }
     \label{tab:speed}
@@ -290,7 +296,7 @@ Note that, alongside write speed and message loss, we also report read speed.
 It is worth noting that this is not a measure of maximum read speed, as this is limited by the write speed.
 In general, as long as the reader can keep up with the writer, read speed should be approximately the same as write speed.
 It is not clear to us why the reported read speed is sometimes slightly higher than write speed.
-We believe that this might be because the writers starts a shortly before the reader and it might have time to write some messages before the readers starts to read them.
+We believe that this might be because the writers starts shortly before the reader and it might have time to write some messages before the readers starts to read them.
 This would cause the reader to quickly read messages previously in the historical queue and suggests that it is possible to consume messages faster than we can produce it which is, in general, a desirable property in publish-subscribe systems.
 
 The fact that some DDS messages were lost shows that our DDS testing harness can write large messages faster than it can read them.
@@ -299,10 +305,10 @@ This is not a cause for concern, as long as we keep up with the actual rate at w
 \section{System Wide Deployment}
 \label{sec:swd}
 
-Following the encouraging performance results we obtained with Kafka, we went ahead and started a system-wide adoption project.
-We started by updating our high level Python library to replace DDS with Kafka.
+Following the encouraging performance results we obtained with Kafka, we started a system-wide adoption project.
+We commenced by updating our high level Python library to replace DDS with Kafka.
 During this period we wanted to maintain compatibility between both versions of the library to ease the transition.
-Overall, the worked pretty well and we are able to provide a compatible versions of the library that can be seamlessly swapped.
+Overall, the worked pretty well and we are able to provide compatible versions of the library that can be seamlessly swapped.
 
 Although the majority of our components are written using the high level Python library, some of the most critical components are written in C++ and Java, namely; the pointing component, the M1M3 support system (both in C++) and the cameras control system (in Java).
 The second phase of the process was then to update our C++ and Java components.
@@ -323,7 +329,7 @@ In Figure~\ref{fig:swd}, we show a screenshot of the user interface of our syste
     The left hand panel shows the state of all the components currently running; green means the system is in Enabled state which is when they are operational, yellow systems are in Standby which means the system is alive but not able to perform any action and blue means the system is in Disable which means the system is configured and ready to operate but will not perform any action.
     Two states are not represented; Offline and Fault, which are states for components that are not running or when they experience unexpected behavior.
     The middle panel shows the view of the Simonyi telescope status, showing the current position of the telescope and the state of the different axis.
-    The right hand panel show the same view for the Auxiliary Telescope.
+    The right hand panel shows the same view for the Auxiliary Telescope.
   }\label{fig:swd}
 \end{figure}
 
@@ -343,7 +349,7 @@ This material is based upon work supported in part by the National Science Found
 Additional Rubin Observatory funding comes from private donations, grants to universities, and in-kind support from LSSTC Institutional Members.
 
 % References
-\bibliography{report} % bibliography data in report.bib
+\bibliography{report,refs_ads,lsst} % bibliography data in report.bib
 \bibliographystyle{spiebib} % makes bibtex use spiebib.bst
 
 \end{document}
