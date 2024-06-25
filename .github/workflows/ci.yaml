@@ -43,4 +43,4 @@ jobs:
           LTD_PASSWORD: ${{ secrets.LTD_PASSWORD }}
           LTD_USERNAME: ${{ secrets.LTD_USERNAME }}
         run: |
-          lander --upload --extra-download Kafka-control.pdf --pdf TSTN-045.pdf --ltd-product tstn-045 --title "Replacing DDS with Apache Kafka as middleware technology for the Rubin Observatory Control System" --handle "TSTN-045" --lsstdoc "TSTN-045.tex"
+          lander --upload --extra-download Kafka-control.pptx --pdf TSTN-045.pdf --ltd-product tstn-045 --title "Replacing DDS with Apache Kafka as middleware technology for the Rubin Observatory Control System" --handle "TSTN-045" --lsstdoc "TSTN-045.tex"
