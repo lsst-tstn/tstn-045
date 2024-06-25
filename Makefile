@@ -13,7 +13,7 @@ endif
 
 export TEXMFHOME ?= lsst-texmf/texmf
 
-$(DOCNAME).pdf: $(tex) local.bib authors.tex
+$(DOCNAME).pdf: $(tex) report.bib authors.tex
 	latexmk -bibtex -xelatex -f $(DOCNAME)
 
 authors.tex:  authors.yaml

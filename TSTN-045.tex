@@ -85,7 +85,8 @@ At the same time, it can become quite burdensome to update and grow these system
 
 In any case, the middleware plays a crucial role in any kind of distributed system, acting as the glue that binds the system together.
 
-The Vera C. Rubin Observatory\cite{2019ApJ...873..111I} Control System (Rubin-OCS) is designed following the principles of a distributed, reactive architecture.
+The Vera C. Rubin Observatory\cite{s2008arXiv0805.2366I} Control System (Rubin-OCS) is designed following the principles of a distributed, reactive architecture.
+% \cite{2019ApJ...873..111I}
 The system is composed of a number of independent components that work together to execute cohesive operations.
 The middleware is encapsulated in the Service Abstraction Layer (SAL), which currently uses the ADLink-OpenSpliceDDS implementation of the Data Distribution Service (DDS) message passing system \cite{2016SPIE.9906E..5CM,2010SPIE.7740E..2CM}.
 Like similar projects before us\cite{10.1117/12.2313106}, we experienced considerable challenges with DDS while rolling out the system into production.
@@ -180,7 +181,7 @@ Our primary performance requirements are:
 \begin{itemize}
   \item Average latency better than 25ms.
   \item Latency standard deviation better than 3ms.
-  \item Throughput better than X MB/s per topic.
+  \item Throughput better than 3 MB/s per topic.
   \item Consumers must be able to keep up with the data they read.
   \item Must be able to handle the full system throughput.
 \end{itemize}
